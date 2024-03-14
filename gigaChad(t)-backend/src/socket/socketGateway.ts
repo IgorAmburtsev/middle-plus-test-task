@@ -8,6 +8,7 @@ import {
 import { Server } from 'socket.io';
 import { SocketGatewayService } from './socketGateway.service';
 import { MessageDto } from '@dto/index';
+import { UsersService } from 'users/users.service';
 
 @WebSocketGateway({
   cors: {
@@ -17,7 +18,10 @@ import { MessageDto } from '@dto/index';
   },
 })
 export class SocketGateway implements OnModuleInit {
-  constructor(private readonly socketGatewayService: SocketGatewayService) {}
+  constructor(
+    private readonly socketGatewayService: SocketGatewayService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @WebSocketServer()
   server: Server;
@@ -32,5 +36,10 @@ export class SocketGateway implements OnModuleInit {
   async createMessage(@MessageBody() messageDto: MessageDto) {
     const message = await this.socketGatewayService.sendMessage(messageDto);
     return message;
+  }
+  @SubscribeMessage('findUser')
+  async findUser(@MessageBody() body: string) {
+    const user = await this.usersService.findUser(body);
+    return user;
   }
 }

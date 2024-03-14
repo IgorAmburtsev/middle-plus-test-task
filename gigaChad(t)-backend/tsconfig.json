@@ -17,7 +17,8 @@
       "@modules/*": ["modules/*"],
       "@services/*": ["services/*"],
       "@socket/*": ["socket/*"],
-      "@storage/*": ["../storage/*"]
+      "@storage/*": ["../storage/*"],
+      "@users/*": ["users/*"],
     },
     "incremental": true,
     "skipLibCheck": true,
