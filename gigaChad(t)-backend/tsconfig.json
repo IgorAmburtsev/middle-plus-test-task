@@ -9,7 +9,16 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
+    "paths": {
+      "@controllers/*": ["controllers/*"],
+      "@dto/*": ["dto/*"],
+      "@entities/*": ["entities/*"],
+      "@modules/*": ["modules/*"],
+      "@services/*": ["services/*"],
+      "@socket/*": ["socket/*"],
+      "@storage/*": ["../storage/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
