@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@entities/index';
 import { UserDto } from '@dto/index';
 import { Repository } from 'typeorm';
-import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
@@ -14,14 +13,14 @@ export class AuthService {
   ) {}
   async valdateUser({ username, password }: AuthDto) {
     const findUser = await this.userRepository.findOne({
-      select: ['username', 'password', 'usertag', 'chats'],
+      select: ['username', 'password'],
       where: { username: username },
     });
 
-    if (!findUser) return null;
+    if (!findUser) return;
 
     if (!(await bcrypt.compare(password, findUser.password))) {
-      return null;
+      return;
     }
 
     return findUser;
@@ -29,5 +28,13 @@ export class AuthService {
 
   async register(userDto: UserDto) {
     return this.userRepository.save(userDto);
+  }
+
+  async findUser(body: string) {
+    return await this.userRepository.findOne({
+      where: {
+        usertag: body,
+      },
+    });
   }
 }
