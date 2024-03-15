@@ -5,7 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SocketGatewayModule } from '@socket/socketGateway.module';
 import { AuthModule } from './auth/auth.module';
-import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 
 @Module({

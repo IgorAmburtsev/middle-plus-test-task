@@ -19,6 +19,7 @@
       "@socket/*": ["socket/*"],
       "@storage/*": ["../storage/*"],
       "@users/*": ["users/*"],
+      "@utils/*":["utils/*"],
     },
     "incremental": true,
     "skipLibCheck": true,

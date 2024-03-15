@@ -23,7 +23,7 @@ export class AuthController {
   @Post('register')
   async register(@Body() userDto: UserDto) {
     const hashedPass = await bcrypt.hash(userDto.password, 10);
-    const { password, ...result } = this.authService.register({
+    const result = this.authService.register({
       ...userDto,
       password: hashedPass,
     });
@@ -42,7 +42,7 @@ export class AuthController {
       usertag: validatedUser.usertag,
     });
 
-    res.cookie('token', token, { httpOnly: true });
+    res.cookie('token', token, { sameSite: 'strict', httpOnly: true });
     return {
       response: 'success',
     };
