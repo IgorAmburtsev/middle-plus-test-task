@@ -106,6 +106,7 @@
       &__name {
         font-size: 22px;
         font-weight: 600;
+        text-transform: capitalize;
       }
 
       &.active {
