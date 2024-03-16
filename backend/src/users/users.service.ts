@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@entities/index';
 import { UserDto } from '@dto/index';
-import { Raw, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User, 'gigaChat')
     private readonly userRepository: Repository<User>,
+
   ) {}
 
   async createUser(userDto: UserDto) {
@@ -16,13 +17,10 @@ export class UsersService {
     return user;
   }
 
-  async findUser(body: string) {
-    const user = await this.userRepository
-      .createQueryBuilder('user')
-      .where('user.usertag ILIKE :body OR user.username ILIKE :body', {
-        body,
-      })
-      .getMany();
-    return user;
-  }
+  async findAllUsers() {
+    const users = await this.userRepository.find({
+      select: ['username', 'usertag'],
+    })
+    return users
+  }    
 }

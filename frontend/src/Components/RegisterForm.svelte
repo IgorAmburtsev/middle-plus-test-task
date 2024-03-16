@@ -1,32 +1,52 @@
 <script lang="ts">
-    import { fade } from 'svelte/transition';
+    import { fly } from 'svelte/transition';
     import type { Writable } from "svelte/store";
 	import { getContext } from "svelte";
+	import { axiosInstance } from "@Utils/http";
+	import type { userRegister } from '@Utils/types';
 
 	const loginState = getContext<Writable<string>>("loginState");
+
+	const formData:userRegister = {
+		username: "",
+		usertag: "",
+		password: "",
+	}		
+
+
+	const handleSubmit = async () => {
+		console.log(formData)
+		try {
+			await axiosInstance.post('/auth/register', formData)
+			$loginState = 'login'
+		} catch (error) {
+			console.log(error)
+		}
+	}	
+
 </script>
 
-<div in:fade class="wrapper">
-<div class="subtitle">Log in</div>
+<div in:fly class="wrapper">
+<div class="subtitle">Register</div>
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<form class="inputs">
+<div class="inputs">
 	<div class="input">
 		<label for="username" class="label">Username</label>
-		<input type="text" id="username" class="input" />
+		<input type="text" id="username" class="input" bind:value={formData.username}/>
 	</div>
     <div class="input">
 		<label for="usertag" class="label">User Tag</label>
-		<input type="text" id="usertag" class="input" />
+		<input type="text" id="usertag" class="input" bind:value={formData.usertag}/>
 	</div>
 	<div class="input">
 		<label for="password" class="label">Password</label>
-		<input type="password" id="password" class="input" />
+		<input type="password" id="password" class="input" bind:value={formData.password}/>
 	</div>
 
-	<button type="submit" class="button">Register</button>
+	<button type="submit" class="button" on:click={handleSubmit}>Register</button>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="button_reg" on:click={() => $loginState = "login"}>Log in</div>
-</form>
+</div>
 </div>
 <style lang="scss">
     .wrapper {

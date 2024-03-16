@@ -12,6 +12,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
     "@tsconfig/svelte": "^5.0.2",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.11.28",
     "sass": "^1.72.0",
     "svelte": "^4.2.12",
@@ -22,6 +23,8 @@
   },
   "dependencies": {
     "axios": "^1.6.7",
-    "svelte-inline-svg": "^1.2.0"
+    "date-fns": "^3.5.0",
+    "js-cookie": "^3.0.5",
+    "socket.io-client": "^4.7.5"
   }
 }

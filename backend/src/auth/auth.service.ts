@@ -13,7 +13,7 @@ export class AuthService {
   ) {}
   async valdateUser({ username, password }: AuthDto) {
     const findUser = await this.userRepository.findOne({
-      select: ['username', 'password'],
+      select: ['username', 'password', 'usertag'],
       where: { username: username },
     });
 

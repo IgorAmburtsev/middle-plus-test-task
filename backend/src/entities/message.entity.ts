@@ -4,21 +4,28 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Chat } from './chat.entity';
 
 @Entity()
 export class Message {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
-  chatId: number;
+  @ManyToOne(() => Chat, (chat) => chat.messages)
+  @JoinColumn({ name: 'chatId' })
+  chat: Chat;
 
   @Column({ type: 'varchar', nullable: false })
   userTo: string;
 
   @Column({ type: 'varchar', nullable: false })
   userFrom: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  edited: boolean;
 
   @Column({ type: 'varchar', nullable: false })
   messageText: string;

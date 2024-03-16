@@ -34,12 +34,26 @@ export class SocketGateway implements OnModuleInit {
 
   @SubscribeMessage('createMessage')
   async createMessage(@MessageBody() messageDto: MessageDto) {
-    const message = await this.socketGatewayService.sendMessage(messageDto);
-    return message;
+    await this.socketGatewayService.sendMessage(messageDto).then(() => {
+      this.server.emit('createdMessage');
+    });
+    
   }
-  @SubscribeMessage('findUser')
-  async findUser(@MessageBody() body: string) {
-    const user = await this.usersService.findUser(body);
-    return user;
+
+  @SubscribeMessage('findMessages')
+  async findMessages(@MessageBody() messageDto:MessageDto) {
+    const response = await this.socketGatewayService.findMessagesByChatId(messageDto)
+    this.server.emit('updateMessages', response);
+  }
+
+  @SubscribeMessage('editMessage')
+  async editMessage(@MessageBody() messageDto:MessageDto) {
+     await this.socketGatewayService.editMessage(messageDto)
+    //  this.server.emit('findMessages', messageDto);
+  }
+
+  @SubscribeMessage('chatCreate')
+  async chatCreate() {
+    this.server.emit('chatCreated')
   }
 }

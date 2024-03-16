@@ -37,12 +37,11 @@ export class AuthController {
   ) {
     const validatedUser = await this.authService.valdateUser(authDto);
     if (!validatedUser) throw new BadRequestException('Invalid Credentials');
-
     const token = await this.jwtService.signAsync({
       usertag: validatedUser.usertag,
     });
 
-    res.cookie('token', token, { sameSite: 'strict', httpOnly: true });
+    res.cookie('token', token);
     return {
       response: 'success',
     };
@@ -56,9 +55,7 @@ export class AuthController {
       const data = await this.jwtService.verifyAsync(cookie);
 
       if (!data) throw new UnauthorizedException();
-
       const user = await this.authService.findUser(data.usertag);
-
       const { password, ...result } = user;
 
       return result;

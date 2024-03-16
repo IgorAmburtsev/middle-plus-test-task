@@ -1,4 +1,5 @@
 export class ChatDto {
+  chatId: number;
   chatName: string;
-  users: string[];
+  usertag: string;
 }
