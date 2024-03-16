@@ -3,8 +3,6 @@
 	import { getContext } from "svelte";
 	import RegisterForm from "@Components/RegisterForm.svelte";
 	import type { Writable } from "svelte/store";
-    import { axiosInstance } from "@Utils/http";
-	import { fly } from 'svelte/transition';
 
 	const loginState = getContext<Writable<string>>("loginState");
 </script>

@@ -15,7 +15,6 @@
 
 
 	const handleSubmit = async () => {
-		console.log(formData)
 		try {
 			await axiosInstance.post('/auth/register', formData)
 			$loginState = 'login'

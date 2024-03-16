@@ -7,7 +7,7 @@
   import type { user } from "@Utils/types";
   import { socket } from "@Utils/http";
   let searchText = "";
-  let userList = [];
+  let userList: {usertag: string; username: string}[] = [];
   let filtredList = userList;
   const openModal = getContext<Writable<boolean>>("openModal");
   const user = getContext<Writable<user>>("user");
@@ -52,6 +52,7 @@
 </script>
 
 <div class="modal" in:fly out:fly>
+  <!--Тут кастомный ивент не нашел быстрой инфы как пофиксить-->
   <div
     class="modal__content"
     use:clickOutside

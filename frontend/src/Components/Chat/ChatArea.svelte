@@ -20,7 +20,10 @@
     };
     socket.emit("createMessage", messagePattern);
     messageText = "";
-    socket.on("createdMessage", () => {
+    socket.on("createdMessage", (data) => {
+      if (data.userTo === $user.usertag) {
+        new Notification(`You recieve a message ${data.userTo}!`, {body: `New message from ${data.userFrom}`});
+      }
       socket.emit("findMessages",  { chatId: selectedChat.chatId, userTo: selectedChat.users[0].usertag });
     });
     return;

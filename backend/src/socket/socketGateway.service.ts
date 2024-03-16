@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Chat, Message, User } from '@entities/index';
+import { Chat, Message } from '@entities/index';
 import { MessageDto } from '@dto/index';
 
 @Injectable()
@@ -13,9 +13,11 @@ export class SocketGatewayService {
     private readonly chatRepository: Repository<Chat>,
   ) {}
 
-  async sendMessage(messageDto: MessageDto){
-
-    const chat = await this.chatRepository.findOne({where: {chatId: messageDto.chatId}, relations: ['messages'] });
+  async sendMessage(messageDto: MessageDto) {
+    const chat = await this.chatRepository.findOne({
+      where: { chatId: messageDto.chatId },
+      relations: ['messages'],
+    });
     const message = this.messageRepository.create({
       chat,
       userTo: messageDto.userTo,
@@ -27,7 +29,6 @@ export class SocketGatewayService {
   }
 
   async findMessagesByChatId(messageDto: MessageDto) {
-    console.log(messageDto.chatId)
     return this.messageRepository.find({
       where: { chat: { chatId: messageDto.chatId } },
       relations: ['chat'],
@@ -37,7 +38,7 @@ export class SocketGatewayService {
 
   async editMessage(messageDto: MessageDto) {
     const message = await this.messageRepository.findOne({
-      where: { id: messageDto.id, chat: {chatId: messageDto.chatId} },
+      where: { id: messageDto.id, chat: { chatId: messageDto.chatId } },
     });
     message.messageText = messageDto.messageText;
     message.edited = true;

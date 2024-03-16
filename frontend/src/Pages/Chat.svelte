@@ -38,13 +38,6 @@
 </div>
 
 <style lang="scss">
-  .flex-end {
-    justify-content: flex-end;
-  }
-
-  .flex-start {
-    justify-content: flex-start;
-  }
 
   .wrapper {
     width: 100%;

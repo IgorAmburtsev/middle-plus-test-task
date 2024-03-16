@@ -21,18 +21,19 @@ export interface chats {
   [key: string]: any;
   chatId: number;
   chatName: string;
-  users: object[];
-}
+  messages: object[]
+  users: {
+    usertag: string;
+    username: string;
+  }[];
+};
 
 export interface chatInstance {
   chatId: number;
   chatName: string;
-  users: [
-    {
-      usertag: string;
-      username: string;
-    }
-  ];
+  users: {
+    usertag: string;
+    username: string;
+  }[];
 }
-
-export type ChatList = chats[];
+[];

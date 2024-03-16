@@ -1,21 +1,19 @@
 <script lang="ts">
-  import checkmark from "@Assets/checkmark.svg?raw";
   import plus from "@Assets/plus.svg?raw";
   import { axiosInstance } from "@Utils/http";
   import { getContext, onMount } from "svelte";
   import type { Writable } from "svelte/store";
   import { socket } from "@Utils/http";
-  import type { chatInstance, ChatList, chats, user } from "@Utils/types";
+  import type { chatInstance, chats, user } from "@Utils/types";
 
   const openModal = getContext<Writable<boolean>>("openModal");
-  const chatsList = getContext<Writable<ChatList[]>>("chatsList");
+  const chatsList = getContext<Writable<chats[]>>("chatsList");
   const selectedChat = getContext<Writable<chatInstance>>("selectedChat");
   const user = getContext<Writable<user>>("user");
 
-
   const getChats = async () => {
     try {
-      const { data } = await axiosInstance.post<ChatList[]>(
+      const { data } = await axiosInstance.post<chats>(
         "/chats/getChats",
         $user
       );
@@ -24,24 +22,24 @@
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   onMount(async () => {
-    getChats()
+    getChats();
   });
 
-  $: socket.on('chatCreated', async () => {
-    await getChats()
-  })
+  $: socket.on("chatCreated", async () => {
+    await getChats();
+  });
 
-  const selectChat = async (chat:chatInstance) => {
+  const selectChat = async (chat: chatInstance) => {
     const chatPattern = {
       chatId: chat.chatId,
       chatName: chat.chatName,
       users: chat.users,
-    }
-    $selectedChat = chatPattern
-  }
-
+      messages: [],
+    };
+    $selectedChat = chatPattern;
+  };
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -49,16 +47,14 @@
   {#each $chatsList as chat}
     <!-- svelte-ignore missing-declaration -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="user" on:click={() => selectChat(chat)}>
-      <div class="user__name">{chat.chatName ? chat.chatName :  chat.users[0].username}</div>
-      {#if chat.messages}
-      <div class="user__text">
-        chat.messages.at(-1)
+    <div
+      class="user"
+      on:click={() => selectChat(chat)}
+      class:active={chat.chatId === $selectedChat.chatId}
+    >
+      <div class="user__name">
+        {chat.chatName ? chat.chatName : chat.users[0].username}
       </div>
-      <div class="user__readed">
-        {@html checkmark}
-      </div>
-      {/if}
     </div>
   {/each}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -107,36 +103,14 @@
       box-sizing: border-box;
       padding-left: 15px;
 
-      &__readed {
-        position: absolute;
-        width: 25px;
-        height: 25px;
-        right: 15px;
-        bottom: 10px;
-
-        &.readed {
-          :global(svg path) {
-            fill: black;
-          }
-        }
-
-        :global(svg path) {
-          fill: rgb(151, 151, 151);
-        }
-      }
-
       &__name {
         font-size: 22px;
         font-weight: 600;
       }
 
-      &__text {
-        font-size: 18px;
-        font-weight: 500;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        width: 90%;
-        white-space: nowrap;
+      &.active {
+        background-color: #232323;
+        color: white;
       }
     }
 
@@ -152,11 +126,5 @@
       justify-content: center;
       align-items: center;
     }
-  }
-  .modal {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
   }
 </style>

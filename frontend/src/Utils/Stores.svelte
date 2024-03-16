@@ -1,7 +1,7 @@
 <script lang="ts">
   import { writable, type Writable } from "svelte/store";
   import { setContext, onMount } from "svelte";
-  import { axiosInstance } from "@Utils/http";
+  import { axiosInstance } from "./http";
   import type { user } from "./types";
 
   const user = writable<user | string>("");
@@ -22,6 +22,10 @@
   $: if (!$user) {
     getUser()
   }
+
+  onMount(() => {
+    Notification.requestPermission()
+  });
 
   setContext("user", user);
   setContext("loginState", loginState);

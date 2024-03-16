@@ -1,12 +1,8 @@
 <script lang="ts">
-  import loupe from "@Assets/loupe.svg";
 </script>
 
 <div class="top-bar">
   <div class="logo">Gigachat|D|</div>
-  <div class="search">
-    <img src={loupe} alt="loupe" />
-  </div>
 </div>
 
 <style lang="scss">
